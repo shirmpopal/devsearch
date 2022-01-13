@@ -9,7 +9,8 @@ class Profile(models.Model):
   name = models.CharField(max_length=200)
   email = models.EmailField(max_length=500, null=True, blank=True)
   username = models.CharField(max_length=200, null=True, blank=True)
-  headline = models.TextField(null=True, blank=True)
+  headline = models.CharField(max_length=200, null=True, blank=True)
+  bio = models.TextField(null=True, blank=True)
   location = models.CharField(max_length=500, null=True, blank=True)
   profile_image = models.ImageField(default="profiles/user-default.png", upload_to="profiles/")
   social_github = models.CharField(max_length=200, null=True, blank=True)
@@ -25,7 +26,7 @@ class Profile(models.Model):
 
 
 class Skill(models.Model):
-  owner = models.ForeignKey(User, on_delete=models.CASCADE)
+  owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
   name = models.CharField(max_length=200)
   description = models.TextField(null=True, blank=True)
   created = models.DateTimeField(auto_now_add=True)
