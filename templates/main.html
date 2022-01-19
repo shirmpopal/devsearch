@@ -20,6 +20,9 @@
 </head>
 
 <body>
+  {% for msg in messages %}
+  <p>{{msg}}</p>
+  {% endfor %}
   {% include 'navbar.html' %}
   {% block content %}
 
