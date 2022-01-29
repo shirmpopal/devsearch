@@ -8,4 +8,5 @@ urlpatterns = [
   path('register/', views.register_user, name='register'),
   path('', views.profiles, name='users-profiles'),
   path('profile<str:pk>', views.profile, name='users-profile'),
+  path('account', views.user_account, name='users-account'),
 ]

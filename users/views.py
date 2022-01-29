@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User 
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 from .forms import CustomeUserCreationForm
 from django.contrib import messages
 from .models import Profile
@@ -71,3 +72,15 @@ def profile(request, pk):
     'other_skills': other_skills,
   }
   return render(request, 'users/profile.html', context)
+
+@login_required(login_url="login")
+def user_account(request):
+  profile = request.user.profile
+  skills = profile.skill_set.all()
+  projects = profile.project_set.all()
+  context = {
+    'profile': profile,
+    'skills': skills,
+    'projects': projects
+  }
+  return render(request, 'users/account.html', context)
