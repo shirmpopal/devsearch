@@ -2,9 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User 
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-from .forms import CustomeUserCreationForm
 from django.contrib import messages
 from .models import Profile
+from .forms import CustomeUserCreationForm, ProfileForm
+
 
 def login_user(request):
   if request.user.is_authenticated:
@@ -45,7 +46,7 @@ def register_user(request):
       user.save()
       messages.success(request, 'Account registered!')
       login(request, user)
-      return redirect('users-profiles')
+      return redirect('users-edit-account')
     else:
       messages.error(request, 'Error occurred during regitration!')
 
@@ -84,3 +85,18 @@ def user_account(request):
     'projects': projects
   }
   return render(request, 'users/account.html', context)
+
+@login_required(login_url='login')
+def edit_account(request):
+  profile = request.user.profile
+  form = ProfileForm(instance=profile)
+
+  if request.method == 'POST':
+    form = ProfileForm(request.POST, request.FILES, instance=profile ) 
+    if form.is_valid():
+      form.save()
+      return redirect('users-account')
+  context = {
+    'form': form,
+  }
+  return render(request, 'users/profile_form.html', context)
