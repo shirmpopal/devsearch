@@ -7,7 +7,6 @@ class ProjectForm(ModelForm):
   class Meta:
     model = Project 
     fields = [
-      'owner',
       'title',
       'description',
       'featured_image',
