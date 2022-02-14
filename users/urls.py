@@ -10,4 +10,7 @@ urlpatterns = [
   path('profile<str:pk>', views.profile, name='users-profile'),
   path('account', views.user_account, name='users-account'),
   path('edit-account', views.edit_account, name='users-edit-account'),
+  path('add-skill', views.create_skill, name='users-create-skill'),
+  path('update-skill<str:pk>', views.update_skill, name='users-update-skill'),
+  path('delete-dkill<str:pk>', views.delete_skill, name='users-delete-skill'),
 ]
