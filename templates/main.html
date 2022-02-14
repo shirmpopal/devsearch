@@ -20,13 +20,20 @@
 </head>
 
 <body>
-  {% for msg in messages %}
-  <p>{{msg}}</p>
-  {% endfor %}
   {% include 'navbar.html' %}
+
+  {% if messages %}
+  {% for msg in messages %}
+  <nav class="alert alert--{{msg.tags}}">
+    <p class="alert__message">{{msg}}</p>
+    <button class="alert__close">x</button>
+  </nav>
+  {% endfor %}
+  {% endif %}
+
   {% block content %}
 
   {% endblock content %}
 </body>
-
+<script src="{% static 'uikit/app.js' %}"></script>
 </html>
