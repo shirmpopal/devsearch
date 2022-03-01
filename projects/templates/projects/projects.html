@@ -49,10 +49,12 @@
           </div>
         </div>
         {% endfor %}
-
       </div>
     </div>
   </section>
+
+  {% include 'pagination.html' with queryset=projects custome_range=custome_range %}
+
 </main>
 
 {% endblock content %}
