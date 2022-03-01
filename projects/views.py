@@ -7,7 +7,7 @@ from .utils import search_projects, paginate_projects
 def projects(request):
   projects, search_query = search_projects(request)
 
-  projects, custome_range = paginate_projects(request, projects, 1)
+  projects, custome_range = paginate_projects(request, projects, 6)
 
   context = {
     'projects': projects,
