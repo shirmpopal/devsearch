@@ -19,19 +19,41 @@ class Project(models.Model):
     return str(self.title)
 
   class Meta:
-    ordering = ['created']
+    ordering = ['-vote_ratio', '-vote_count' ,'title']
+
+  @property
+  def count_vote(self):
+    reviews = self.review_set.all()
+    up_votes = reviews.filter(value='up').count()
+    total_votes = reviews.count()
+    ratio = (up_votes / total_votes) * 100
+
+    self.vote_count = total_votes
+    self.vote_ratio = ratio 
+
+    self.save()
+
+  @property
+  def get_reviewers(self):
+    reviewers = self.review_set.all().values_list('owner__id', flat=True)
+    return reviewers
 
 class Review(models.Model):
   VALUE_TYPE = (
     ('up', 'Up_vote'),
     ('down', 'Down_vote')
   )
-  project = models.OneToOneField(Project, on_delete=models.CASCADE)
-  # owner = 
+  project = models.ForeignKey(Project, on_delete=models.CASCADE)
+  owner = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
   body = models.TextField(null=True, blank=True)
   value = models.CharField(max_length=200, choices=VALUE_TYPE)
   created = models.DateTimeField(auto_now_add=True)
   id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
+
+  class Meta:
+    constraints = [
+      models.UniqueConstraint(fields=['owner', 'project'], name='unique_review')
+    ]
 
   def __str__(self):
     return str(self.value)

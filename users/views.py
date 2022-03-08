@@ -12,7 +12,7 @@ def login_user(request):
   if request.user.is_authenticated:
     return redirect('users-profiles')
   if request.method == 'POST':
-    username = request.POST['username']
+    username = request.POST['username'].lower()
     password = request.POST['password']
     
     try:
@@ -24,7 +24,7 @@ def login_user(request):
       if user:
         login(request, user)
         messages.success(request, 'Logged in successfully!')
-        return redirect('users-profiles')
+        return redirect(request.GET['next'] if 'next' in request.GET else 'users-account')
       else:
         messages.error(request, 'Username or password incorrect!')
 
